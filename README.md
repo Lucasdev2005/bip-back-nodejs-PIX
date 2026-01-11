@@ -99,7 +99,7 @@ documentação:
 http://localhost:3000/docs
 ```
 
-## Testando
+## 🧪 Testando
 ```bash
 npm run test
 ```
