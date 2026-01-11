@@ -7,11 +7,15 @@ import { containerDI } from './constant/container-di.const.js';
 import { logger } from './constant/logger.const.js';
 
 export class Api {
-  constructor() {}
+  constructor({ redisService, configService }) {
+    this.redisService = redisService;
+    this.configService = configService;
+  }
 
   async run() {
     logger.info('Starting API server.');
     const app = await express();
+    const port = this.configService.getNumber('PORT');
 
     app.use(express.json());
     app.use(scopePerRequest(containerDI));
@@ -27,8 +31,8 @@ export class Api {
       router(req, res, next);
     });
 
-    app.listen(3000, () => {
-      logger.info('Server is running on port 3000.');
+    app.listen(port, () => {
+      logger.info(`Server is running on port ${port}.`);
     });
   }
 }

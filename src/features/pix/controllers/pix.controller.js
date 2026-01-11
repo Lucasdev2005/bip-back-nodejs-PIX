@@ -1,15 +1,12 @@
 export class PixController {
 
-  getParticipantsByIspb(req, res) {
-    const { ispb } = req.params;
+  constructor({ pixService }) {
+    this.pixService = pixService;
+  }
 
-    // Lógica para buscar o participante pelo ISPB
-    // Exemplo fictício de resposta
-    const participant = {
-      ispb,
-      name: 'Banco Exemplo',
-      code: '12345678',
-    };
+  async getParticipantsByIspb(req, res) {
+    const { ispb } = req.params;
+    const participant = await this.pixService.getParticipantsByIspb(ispb);
 
     if (!participant) {
       return res.status(404).json({ error: 'Participant not found' });

@@ -21,7 +21,10 @@ export const createPixRoutes = (container) => {
    *       200:
    *         description: OK
    */
-  router.get('/participants/:ispb', controller.getParticipantsByIspb);
+  router.get(
+    '/participants/:ispb',
+    controller.getParticipantsByIspb.bind(controller)
+  );
 
   return router;
 };
