@@ -2,7 +2,6 @@ import winston from 'winston';
 
 const { combine, timestamp, printf, colorize, errors } = winston.format;
 
-// Formato colorido e legível para console
 const consoleFormat = combine(
   colorize({ all: true }),
   timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
@@ -12,7 +11,6 @@ const consoleFormat = combine(
   })
 );
 
-// Logger principal
 export const logger = winston.createLogger({
   level: 'info',
   format: combine(
@@ -20,7 +18,6 @@ export const logger = winston.createLogger({
     timestamp()
   ),
   transports: [
-    // Console: colorido e legível
     new winston.transports.Console({
       format: consoleFormat,
     }),
