@@ -1,6 +1,84 @@
 # 🚀 Desafio Técnico Sênior – Backend PIX (Node.js)
 
+# Diagnóstico e Correção sobre Consulta de ISPB
+
 ## Diagnóstico
+
+O endpoint `https://www.bcb.gov.br/api/pix/participants`, que vinha sendo utilizado, aparenta não ser mais válido, pois atualmente retorna erro 404. Isso explica os retornos de erro que víamos mesmo para ISPBs válidos. A solução anterior, portanto, não garantia integridade nem confiabilidade das informações.
+
+Além disso, é importante destacar que **somente instituições participantes do STR possuem ISPB válido** para operações de liquidação interbancária. Instituições que não participam do STR não têm ISPB ativo, o que reforça a necessidade de utilizar uma fonte oficial e consistente de dados para consultas e validações.
+
+<img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/4c67356d-d999-413d-a230-7ded78e940d6" />
+
+
+## Correção
+
+Para substituir o endpoint indisponível, optou-se por utilizar os **datasets disponibilizados pelo próprio Banco Central**, especificamente a [Lista de Participantes do STR](https://dadosabertos.bcb.gov.br/dataset/lista-de-participantes-do-str).  
+
+Esse dataset fornece um **CSV constantemente atualizado** contendo informações completas sobre todos os participantes do **Sistema de Transferência de Reservas (STR)**. Cada participante possui um **ISPB**, que identifica de forma única a instituição no sistema de pagamentos do Banco Central.
+
+Com o dataset, é possível:
+
+- Consultar qualquer participante pelo seu ISPB.  
+- Garantir **integridade e confiabilidade** das informações.  
+- Trabalhar com dados atualizados, considerando que o arquivo possui **TTL de 60 segundos**, sem que sejam excessivamente voláteis.  
+
+Em resumo, a utilização desse dataset oferece uma **fonte oficial, confiável e atualizada** para obtenção de informações sobre participantes do STR e seus ISPBs, substituindo de forma segura o endpoint anteriormente utilizado e eliminando problemas de inconsistência ou falhas de consulta.
+
+<img width="1733" height="967" alt="image" src="https://github.com/user-attachments/assets/ad166cf8-a0da-4e9d-9768-624af62de03e" />
+
+## Explicação técnica das decisões
+
+O dataset em questão oferece tanto PDF quanto CSV como formatos de exportação. Por questões de baixa complexidade e facilidade de processamento, decidi utilizar apenas o CSV, convertendo seu conteúdo para JSON utilizando a biblioteca csvToJson.
+
+Além disso, para melhorar o controle de atualização e cache das informações, subi uma instância de Redis, que permite definir TTL (tempo de vida) para os dados de forma eficiente. Isso substitui a solução anterior, que utilizava persistência apenas em memória, oferecendo maior confiabilidade e desempenho em consultas frequentes, evitando perda de dados ao reiniciar a aplicação ou estourar limites de memória.
+
+Com essa abordagem, conseguimos:
+
+ - Manter os dados atualizados de forma consistente, considerando o TTL do dataset e do cache;
+
+ - Garantir respostas rápidas para consultas de ISPB e informações dos participantes do STR;
+
+ - Evitar inconsistências ou falhas causadas por armazenamento apenas em memória;
+
+ - Transformar o CSV em JSON de forma simples e utilizável diretamente em aplicações e integrações.
+
+Essa estratégia combina a simplicidade do CSV com a eficiência do Redis, garantindo integridade, confiabilidade e desempenho para consultas a participantes do STR e seus respectivos ISPBs.
+
+## Código limpo e organizado
+
+Para garantir **melhor divisão de responsabilidades** e facilitar o desenvolvimento e manutenção dos testes, utilizei **Dependency Injection (D.I.)** com a biblioteca **Awilix**. Essa abordagem permite uma implementação mais **estruturada, modular e facilmente testável**, com responsabilidades bem definidas entre as diferentes camadas da aplicação.
+
+### Camadas da aplicação
+
+Após a configuração da D.I., a aplicação foi organizada nas seguintes camadas:
+
+- **Core:** Contém funcionalidades centrais da aplicação, como a instância da API, acesso a variáveis de ambiente e o **container Awilix** para injeção de dependências.  
+- **Common:** Reúne funcionalidades e recursos **reutilizáveis** em toda a aplicação, como conexão com Redis, constantes globais e utilitários compartilhados.  
+- **Features:** Responsável pela modularização das funcionalidades específicas da aplicação. Cada feature pode conter:
+  - **Classes utilitárias**  
+  - **Services** (lógica de negócio)  
+  - **Controllers** (manipulação de requisições)  
+  - **Constants**  
+  - **Routes** (configuração do Express por módulo)
+
+Essa estrutura facilita a manutenção, o **reuso de código** e a escalabilidade da aplicação.
+
+### Configuração dos testes
+
+Para os testes unitários e de integração, utilizei **Jest** como framework principal.  
+- Para compatibilidade e melhor escrita do código, utilizei **Babel** para transpilar para **CommonJS**, que é o padrão esperado pelo Jest.  
+- Essa configuração permite utilizar **ES Modules** e recursos modernos do JavaScript sem comprometer a execução dos testes.
+
+### Visibilidade e logs
+
+Para garantir melhor visibilidade e rastreabilidade durante a execução da aplicação, configurei a biblioteca **Winston** para gerenciamento de logs.  
+- Isso possibilita **registro estruturado** de mensagens, erros e eventos importantes, facilitando **debug e monitoramento**.
+
+### Documentação da API
+
+Para documentação da API, utilizei a biblioteca **swagger-jsdoc**, que permite gerar documentação **interativa e padronizada** diretamente a partir dos comentários do código.  
+- Isso facilita a **consumibilidade da API** por outras equipes e clientes, além de servir como referência para testes e desenvolvimento.
 
 
 ## ▶️ Como executar o projeto
@@ -12,6 +90,11 @@ docker-compose up --build
 A aplicação ficará disponível em:
 ```
 http://localhost:3000
+```
+
+documentação:
+```
+http://localhost:3000/docs
 ```
 
 ## Testando
