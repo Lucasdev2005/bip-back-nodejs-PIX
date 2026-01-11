@@ -5,6 +5,7 @@ const api = containerDI.resolve(Dependencies.API);
 
 api.run();
 
+
 // let cache = null; // cache sem TTL (bug adicional)
 
 // app.get('/pix/participants/:ispb', async (req, res) => {
