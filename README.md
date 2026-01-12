@@ -24,7 +24,7 @@ Com o dataset, é possível:
 
 Em resumo, a utilização desse dataset oferece uma **fonte oficial, confiável e atualizada** para obtenção de informações sobre participantes e seus ISPBs, substituindo de forma segura o endpoint anteriormente utilizado e eliminando problemas de inconsistência ou falhas de consulta.
 
-<img width="1868" height="992" alt="image" src="https://github.com/user-attachments/assets/b5d6412e-b128-4874-80ab-e0e4e6b97b5a" />
+<img width="1727" height="1015" alt="image" src="https://github.com/user-attachments/assets/2ee97a98-1e6a-4695-b80c-989db1a6f1a9" />
 
 ## Explicação técnica das decisões
 
