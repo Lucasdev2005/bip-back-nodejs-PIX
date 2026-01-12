@@ -42,7 +42,7 @@ Com essa abordagem, conseguimos:
 
  - Transformar o CSV em JSON de forma simples e utilizável diretamente em aplicações e integrações.
 
-Essa estratégia combina a simplicidade do CSV com a eficiência do Redis, garantindo integridade, confiabilidade e desempenho para consultas a participantes do STR e seus respectivos ISPBs.
+Essa estratégia combina a simplicidade do CSV com a eficiência do Redis, garantindo integridade, confiabilidade e desempenho para consultas a participantes e seus respectivos ISPBs.
 
 ## Código limpo e organizado
 
