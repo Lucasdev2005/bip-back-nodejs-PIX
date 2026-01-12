@@ -22,7 +22,7 @@ Com o dataset, é possível:
 - Garantir **integridade e confiabilidade** das informações.  
 - Trabalhar com dados atualizados, considerando que o arquivo possui **TTL de 60 segundos**, sem que sejam excessivamente voláteis.  
 
-Em resumo, a utilização desse dataset oferece uma **fonte oficial, confiável e atualizada** para obtenção de informações sobre participantes do STR e seus ISPBs, substituindo de forma segura o endpoint anteriormente utilizado e eliminando problemas de inconsistência ou falhas de consulta.
+Em resumo, a utilização desse dataset oferece uma **fonte oficial, confiável e atualizada** para obtenção de informações sobre participantes e seus ISPBs, substituindo de forma segura o endpoint anteriormente utilizado e eliminando problemas de inconsistência ou falhas de consulta.
 
 <img width="1733" height="967" alt="image" src="https://github.com/user-attachments/assets/ad166cf8-a0da-4e9d-9768-624af62de03e" />
 
