@@ -20,11 +20,10 @@ export class PixService {
     if (!cache) {
       logger.info('cache não encontrado, buscando dataset do BCB');
 
-      const MAX_TENTATIVAS = 30;
       let tentativa = 0;
       let participantes = null;
 
-      while (tentativa < MAX_TENTATIVAS && !participantes) {
+      while (tentativa < this.configService.getNumber('MAX_RETRIES') && !participantes) {
         const date = new Date();
         date.setDate(date.getDate() - tentativa);
 
