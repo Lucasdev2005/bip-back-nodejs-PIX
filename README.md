@@ -10,21 +10,36 @@ O endpoint `https://www.bcb.gov.br/api/pix/participants`, que vinha sendo utiliz
 
 
 ## Correção
-Para substituir o endpoint indisponível, optou-se por utilizar o CSV disponível no link [Área das instituições participantes do Pix](https://www.bcb.gov.br/estabilidadefinanceira/pix-participantes), que contém a versão atualizada do dataset.
 
-O arquivo é versionado, ou seja, cada atualização gera um novo CSV com a data correspondente no nome do arquivo, como neste exemplo: [lista de participantes em adesão ao Pix – 09/01/2026](https://www.bcb.gov.br/content/estabilidadefinanceira/participantes_pix/lista-participantes-instituicoes-em-adesao-pix-20260109.csv).
+Para substituir o endpoint indisponível, optou-se por utilizar o CSV disponível na **Área das instituições participantes do Pix**, que contém a versão atualizada e oficial do dataset.
 
-Esse dataset fornece informações completas sobre todos os participantes. Cada instituição possui um ISPB, que a identifica de forma única no sistema de pagamentos do Banco Central.
+O arquivo é **versionado por data**, ou seja, cada atualização gera um novo CSV cujo nome inclui a data de publicação, por exemplo:  
+[lista de participantes em adesão ao Pix – 09/01/2026](https://www.bcb.gov.br/content/estabilidadefinanceira/participantes_pix/lista-participantes-instituicoes-em-adesao-pix-20260109.csv)
 
-Com o dataset, é possível:
+Esse dataset fornece informações completas sobre todos os participantes do Pix. Cada instituição possui um **ISPB**, que a identifica de forma única no Sistema de Pagamentos do Banco Central.
 
-- Consultar qualquer participante pelo seu ISPB.  
-- Garantir **integridade e confiabilidade** das informações.  
-- Trabalhar com dados atualizados, considerando que o arquivo possui **TTL de 60 segundos**, sem que sejam excessivamente voláteis.  
+---
 
-Em resumo, a utilização desse dataset oferece uma **fonte oficial, confiável e atualizada** para obtenção de informações sobre participantes e seus ISPBs, substituindo de forma segura o endpoint anteriormente utilizado e eliminando problemas de inconsistência ou falhas de consulta.
+## Estratégia de retries (tentativas)
 
-<img width="1727" height="1015" alt="image" src="https://github.com/user-attachments/assets/2ee97a98-1e6a-4695-b80c-989db1a6f1a9" />
+A estratégia de retries foi definida considerando o processo de publicação do Banco Central e a necessidade de garantir **disponibilidade e confiabilidade** dos dados.
+
+### Funcionamento das tentativas
+
+1. **Tentativa inicial (data atual)**  
+   A aplicação tenta consumir o CSV correspondente à data corrente (`yyyyMMdd`).
+
+2. **Fallback por data**  
+   Caso o arquivo do dia ainda não esteja disponível (ex.: retorno 404 ou erro de leitura), a aplicação realiza novas tentativas retrocedendo **um dia por vez**, buscando o último dataset publicado com sucesso.
+
+3. **Limite de tentativas**  
+   Para evitar loops infinitos e requisições desnecessárias, existe um limite máximo de dias retroativos a serem consultados (ex.: últimos 30 dias).
+
+4. **Uso do primeiro dataset válido**  
+   Assim que um CSV válido é encontrado:
+   - O processo de retries é interrompido.
+   - Os dados são utilizados como fonte oficial.
+   - O resultado é armazenado em cache.
 
 ## Explicação técnica das decisões
 
