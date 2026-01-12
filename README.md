@@ -10,9 +10,9 @@ O endpoint `https://www.bcb.gov.br/api/pix/participants`, que vinha sendo utiliz
 
 
 ## Correção
-Para substituir o endpoint indisponível, optou-se por utilizar o CSV disponível no link Área das instituições participantes do Pix, que contém a versão atualizada do dataset.
+Para substituir o endpoint indisponível, optou-se por utilizar o CSV disponível no link [Área das instituições participantes do Pix](https://www.bcb.gov.br/estabilidadefinanceira/pix-participantes), que contém a versão atualizada do dataset.
 
-O arquivo é versionado, ou seja, cada atualização gera um novo CSV com a data correspondente no nome do arquivo, como neste exemplo: (lista de participantes em adesão ao Pix – 09/01/2026)[https://www.bcb.gov.br/estabilidadefinanceira/pix-participantes].
+O arquivo é versionado, ou seja, cada atualização gera um novo CSV com a data correspondente no nome do arquivo, como neste exemplo: [lista de participantes em adesão ao Pix – 09/01/2026](https://www.bcb.gov.br/content/estabilidadefinanceira/participantes_pix/lista-participantes-instituicoes-em-adesao-pix-20260109.csv).
 
 Esse dataset fornece informações completas sobre todos os participantes. Cada instituição possui um ISPB, que a identifica de forma única no sistema de pagamentos do Banco Central.
 
