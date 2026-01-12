@@ -1,28 +1,27 @@
 import csv from 'csvtojson';
 import axios from 'axios';
-import fs from 'fs';
+import iconv from 'iconv-lite';
 
 export class CsvUtils {
-  static async csvToJson(source) {
+  static async csvToJson(source, skipLines = 0) {
     const isUrl = /^https?:\/\//i.test(source);
 
-    if (isUrl) {
-      const response = await axios.get(source, {
-        responseType: 'stream',
-      });
+    let csvString;
 
-      return csv({
-        delimiter: ',',
-      }).fromStream(response.data);
+    if (isUrl) {
+      const response = await axios.get(source, { responseType: 'arraybuffer' });
+      csvString = iconv.decode(Buffer.from(response.data), 'latin1');
+    } else {
+      csvString = iconv.decode(Buffer.from(fs.readFileSync(source)), 'latin1');
     }
 
-    // arquivo local
-    if (!fs.existsSync(source)) {
-      throw new Error(`Arquivo não encontrado: ${source}`);
+    if (skipLines > 0) {
+      csvString = csvString.split('\n').slice(skipLines).join('\n');
     }
 
     return csv({
-      delimiter: ',',
-    }).fromFile(source);
+      delimiter: ';',
+      trim: true,
+    }).fromString(csvString);
   }
 }

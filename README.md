@@ -6,16 +6,15 @@
 
 O endpoint `https://www.bcb.gov.br/api/pix/participants`, que vinha sendo utilizado, aparenta não ser mais válido, pois atualmente retorna erro 404. Isso explica os retornos de erro que víamos mesmo para ISPBs válidos. A solução anterior, portanto, não garantia integridade nem confiabilidade das informações.
 
-Além disso, é importante destacar que **somente instituições participantes do STR possuem ISPB válido** para operações de liquidação interbancária. Instituições que não participam do STR não têm ISPB ativo, o que reforça a necessidade de utilizar uma fonte oficial e consistente de dados para consultas e validações.
-
 <img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/4c67356d-d999-413d-a230-7ded78e940d6" />
 
 
 ## Correção
+Para substituir o endpoint indisponível, optou-se por utilizar o CSV disponível no link Área das instituições participantes do Pix, que contém a versão atualizada do dataset.
 
-Para substituir o endpoint indisponível, optou-se por utilizar os **datasets disponibilizados pelo próprio Banco Central**, especificamente a [Lista de Participantes do STR](https://dadosabertos.bcb.gov.br/dataset/lista-de-participantes-do-str).  
+O arquivo é versionado, ou seja, cada atualização gera um novo CSV com a data correspondente no nome do arquivo, como neste exemplo: (lista de participantes em adesão ao Pix – 09/01/2026)[https://www.bcb.gov.br/estabilidadefinanceira/pix-participantes].
 
-Esse dataset fornece um **CSV constantemente atualizado** contendo informações completas sobre todos os participantes do **Sistema de Transferência de Reservas (STR)**. Cada participante possui um **ISPB**, que identifica de forma única a instituição no sistema de pagamentos do Banco Central.
+Esse dataset fornece informações completas sobre todos os participantes. Cada instituição possui um ISPB, que a identifica de forma única no sistema de pagamentos do Banco Central.
 
 Com o dataset, é possível:
 

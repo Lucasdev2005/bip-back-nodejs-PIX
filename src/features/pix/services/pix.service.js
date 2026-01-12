@@ -14,9 +14,12 @@ export class PixService {
 
   async getParticipantsByIspb(ispb) {
     let cache = await this.redisService.getKey(KeyCache.PARTICIPANTS);
+
+    logger.info(cache);
+
     if (!cache) {
-      logger.info('requisitando participantes ao dataset dos dados abertos do BCB');
-      cache = await CsvUtils.csvToJson(this.BCB_PARTICIPANTES_URL);
+      logger.info(`requisitando participantes ao dataset dos dados abertos do BCB ${this.BCB_PARTICIPANTES_URL}`);
+      cache = await CsvUtils.csvToJson(this.BCB_PARTICIPANTES_URL, 1);
       logger.info('guardando cache');
       await this.redisService.setKey(KeyCache.PARTICIPANTS, cache, this.configService.getNumber('CACHE_TTL_SECONDS'));
     }
