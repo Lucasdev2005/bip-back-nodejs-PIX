@@ -82,6 +82,8 @@ Para documentação da API, utilizei a biblioteca **swagger-jsdoc**, que permite
 
 ## ▶️ Como executar o projeto
 
+crie um arquivo .env com base no arquivo já existente .env.example e siga os comandos abaixo:
+
 ```bash
 docker-compose up --build
 ```
@@ -96,7 +98,7 @@ documentação:
 http://localhost:3000/docs
 ```
 
-## Testando
+## 🧪 Testando
 ```bash
 npm run test
 ```
